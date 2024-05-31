@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-config
+data:
+  labels: |
+    rabbitHost="rabbitmq"
+    rabbitPort="5672"
+    role="active"
+    rabbitQueue="myProductionQueue"
+

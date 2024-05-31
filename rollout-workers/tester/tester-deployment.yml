@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-tester
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tester
+  template:
+    metadata:
+      labels:
+        app: tester
+    spec:
+      containers:
+      - name: gui-tester
+        image: docker.io/kostiscodefresh/tester:latest
+        env:
+        - name: RABBIT_HOST
+          value: "rabbitmq" ## same name as rabbitMQ service
+      
+        ports:
+        - containerPort: 7000
