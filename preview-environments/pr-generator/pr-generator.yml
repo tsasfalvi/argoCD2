@@ -2,16 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: my-preview-apps
-  namespace: argocd  
+  namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
+  goTemplateOptions: [ "missingkey=error" ]
   generators:
-  - pullRequest:
-      github:
-        owner: tsasfalvi
-        repo: argoCD2
-      requeueAfterSeconds: 180
+    - pullRequest:
+        github:
+          owner: tsasfalvi
+          repo: argoCD2
+          labels:
+          - 'preview-ready'
+        requeueAfterSeconds: 180
   template:
     metadata:
       name: 'myapp-{{.branch}}'
@@ -19,7 +21,7 @@ spec:
       source:
         repoURL: 'https://github.com/tsasfalvi/argoCD2.git'
         targetRevision: HEAD
-        path: preview-environments/kustomize-preview-app/ 
+        path: preview-environments/kustomize-preview-app/
         kustomize:
           images:
             - 'docker.io/kostiscodefresh/my-preview-app:{{.branch_slug}}'
@@ -29,6 +31,6 @@ spec:
         namespace: 'preview-{{.branch_slug}}'
       syncPolicy:
         automated:
-          prune: true  
+          prune: true
         syncOptions:
-        - CreateNamespace=true 
+          - CreateNamespace=true
