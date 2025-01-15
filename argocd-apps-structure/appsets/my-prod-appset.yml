@@ -5,17 +5,17 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
+  goTemplateOptions: [ "missingkey=error" ]
   generators:
-  - git:
-      repoURL: https://github.com/tsasfalvi/argoCD2.git
-      revision: HEAD
-      directories:
-      - path: argocd-apps-structure/apps/*/envs/prod-us
-      - path: argocd-apps-structure/apps/*/envs/prod-eu      
-  template:      
+    - git:
+        repoURL: https://github.com/tsasfalvi/argoCD2.git
+        revision: HEAD
+        directories:
+          - path: argocd-apps-structure/apps/*/envs/prod-us
+          - path: argocd-apps-structure/apps/*/envs/prod-eu
+  template:
     metadata:
-      name: '{{index .path.segments 2}}-{{index .path.segments 4}}' 
+      name: '{{index .path.segments 2}}-{{index .path.segments 4}}'
     spec:
       # The project the application belongs to.
       project: default
@@ -34,7 +34,7 @@ spec:
       # Sync policy
       syncPolicy:
         syncOptions:
-          - CreateNamespace=true  
+          - CreateNamespace=true
         automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
           prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
           selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
